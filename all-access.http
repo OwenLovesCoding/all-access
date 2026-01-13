@@ -1,0 +1,12 @@
+@all_access_HostAddress = https://localhost:7081
+
+GET {{all_access_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+POST {{all_access_HostAddress}}/send-link/
+Accept: application/json
+Content-Type: application/json
+{
+  "url": ""
+}
