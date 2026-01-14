@@ -12,7 +12,7 @@ Transform long, messy URLs into clean, memorable links with this sleek .NET 10 A
 
 🚀 Quick Start
 Prerequisites
- .NET 10 SDK
+> .NET 10 SDK
 
 A Rebrandly account (free tier available!)
 
