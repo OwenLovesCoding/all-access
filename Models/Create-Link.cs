@@ -3,17 +3,6 @@
     public class Create_Link
     {
         //string url = null!;
-       public string SourceUrl { 
-        
-            get { return SourceUrl; }
-            set { 
-                if (value.Length < 6 && string.IsNullOrEmpty(value))
-             
-                { 
-                    
-                    throw new ArgumentException("Invalid URL"); 
-                }
-            }
-        }
+       public string SourceUrl { get; set; } = null!;
     }
 }

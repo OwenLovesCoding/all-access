@@ -23,9 +23,6 @@ namespace all_access.Controllers
         [HttpPost("send-link")]
         public async Task<string> ShortenLink([FromBody] Create_Link urlStruc)
         {
-            Console.WriteLine(urlStruc);
-            return "";
-
             try
             {
                 var client = _httpClientFactory.CreateClient();
@@ -33,17 +30,28 @@ namespace all_access.Controllers
                 client.DefaultRequestHeaders.Add("apikey", rebrandlyApiKey);
                 client.DefaultRequestHeaders.Add("workspace", rebrandlyWorkSpaceId);
 
-                var urlString = new StringContent(JsonSerializer.Serialize(urlStruc), Encoding.UTF8, Application.Json);
+                var linkRequest = new
+                {
+                    destination = urlStruc.SourceUrl,
+                    domain = new { fullName = "rebrand.ly" }
+                };
+
+                var urlString = new StringContent(JsonSerializer.Serialize(linkRequest), Encoding.UTF8, Application.Json);
 
                 using var httpResponseMessage = await client.PostAsync("https://api.rebrandly.com/v1/links", urlString);
 
+                httpResponseMessage.EnsureSuccessStatusCode();
+
                 var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
-                return $"{responseContent}";
 
+                var parseRes = JsonDocument.Parse(responseContent);
+
+                string shortUrl = parseRes.RootElement.GetProperty("shortUrl").GetString()!;
+                return shortUrl;
             }
-
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 throw new Exception("Error creating HTTP request", ex);
             }
        }
